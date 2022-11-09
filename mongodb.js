@@ -12,27 +12,50 @@ function MongoManager(){
 
   console.log(this.dbCredidentals);
 
-  this.CreateInterval=function(newInterval){
-    client.connect(err => {
-      if(err){
-          return console.log("Cant connect to db"+err.cause);
-      }
-    const db = client.db("timer");
-    const collection = db.collection("intervals");
+  this.db=null;
 
-    collection.insertOne({
+  this.client.connect(err => {
+    if(err){
+        return console.log("Cant connect to db"+err.cause);
+    }
+    this.db =  this.client.db("timer");
+
+  });
+
+  this.CreateInterval=function(newInterval){
+
+    const collection = this.db.collection("intervals");
+
+      collection.insertOne({
       interval:newInterval.interval,
       mission: newInterval.mission
     }).then(()=>{
       console.log("Successfuly inserted");
-      client.close();
+      
 
       }).catch(err=>{
         console.log(err);
-        client.close();
+        
       });
-    });
+
   }
+
+  this.GetIntervals=function(DateRange){
+
+    const collection =  this.db.collection("intervals");
+
+    collection.find({}).project({}).toArray().then((result)=>{
+      console.log(result);
+      
+
+    }).catch((err)=>{
+      console.log(err);
+      
+    });
+
+  }
+
+
   return this;
 }
 

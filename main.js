@@ -41,5 +41,13 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
+// dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
+// setTimeout(()=>dbManager.CreateInterval({interval:10,mission:"Timer Backend"}),3000);
+// setTimeout(()=>dbManager.GetIntervals(100),3000);
+setTimeout(()=>{
+  dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
+  dbManager.GetIntervals(3000);
+
+},3000);
+// dbManager.GetIntervals(100);
 
