@@ -1,7 +1,9 @@
 const http = require('node:http');
 const express = require('express');
 const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb')
+const MongoManager = require('./mongodb.js');
+
+const dbManager = MongoManager();
 
 const router = express.Router();
 const app = express();
@@ -14,6 +16,7 @@ const port = 9443;
 //   res.setHeader('Content-Type', 'text/plain');
 //   res.end('Hello, World!\n');
 // });
+
 
 
 app.use("/",router);
@@ -31,8 +34,12 @@ router.post('/login',(req, res) => {
   console.log("User name = "+user_name+", password is "+password);
   res.end("Yes");
   });
-  
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
+
