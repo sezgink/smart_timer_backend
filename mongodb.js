@@ -14,12 +14,10 @@ function MongoManager(){
 
   this.db=null;
 
-  this.client.connect(err => {
-    if(err){
-        return console.log("Cant connect to db"+err.cause);
-    }
+  this.client.connect().then(()=>{
     this.db =  this.client.db("timer");
-
+  }).catch(err=>{
+    return console.log("Cant connect to db"+err.cause);
   });
 
   this.CreateInterval=function(newInterval){
