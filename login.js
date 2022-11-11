@@ -7,9 +7,11 @@ const LoginManager=()=>{
     this.login = (user2check,mongoManager)=>{
         user2check.saltRaunds= saltRaunds;
         
-        mongoManager.CheckUser(user2check);
+        mongoManager.CheckUser(user2check).then((checkResult)=>{
+            console.log(checkResult);
+        });
 
-        
+
     }
 
     this.signUp = (newUser,mongoManager)=>{
@@ -17,7 +19,7 @@ const LoginManager=()=>{
         userdata.username = newUser.username;
 
         bcrypt.hash(newUser.password,saltRaunds).then((hashedPassword)=>{
-            userdata.hashedPassowrd = hashedPassword;
+            userdata.hashedPassword = hashedPassword;
             mongoManager.AddUser(userdata);
 
         }).catch((err)=>{

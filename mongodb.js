@@ -88,27 +88,34 @@ function MongoManager(){
 
   this.CheckUser=function(user2check){
 
-    const collection =  this.db.collection("users");
+    return new Promise((resolve,reject)=>{
 
-    
-    collection.findOne({username:user2check.username}).then((result)=>{
-      console.log(result);
+      const collection =  this.db.collection("users");
+
+      collection.findOne({username:user2check.username}).then((result)=>{
+      // console.log(result);
       if(result==null){
         console.log("User not exists");
         return false;
       }
 
-      bcrypt.compare(user2check.password,result.hashedPassword).then((passwordsMatched)=>{
-        return passwordsMatched;
+      console.log(user2check);
+      console.log(result);
 
+      bcrypt.compare(user2check.password,result.hashedPassword).then((passwordsMatched)=>{
+        resolve(passwordsMatched);
       }).catch((err)=>{
         console.log(err);
+        reject(err);
         return false;
       });
-    }).catch((err)=>{
-      console.log(err);
-      
+      }).catch((err)=>{
+        console.log(err);
+        reject(err);
+      });
+
     });
+    
 
   }
 

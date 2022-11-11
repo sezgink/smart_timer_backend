@@ -52,8 +52,9 @@ setTimeout(()=>{
   // dbManager.AddUser({username:"Hello",hashedPassword:"bro"});
   // dbManager.CheckUser({username:"Mellon",hashedPassword:"bro"});
 
-  LoginManager.login({username:"Jelly",password:"bro"},dbManager);
-  LoginManager.signUp({username:"Potato",password:"drone"},dbManager);
+  // LoginManager.login({username:"Jelly",password:"bro"},dbManager);
+  LoginManager.login({username:"Potatos",password:"drone"},dbManager);
+  LoginManager.signUp({username:"Potatos",password:"drone"},dbManager);
 
 },3000);
 // dbManager.GetIntervals(100);
