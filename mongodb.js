@@ -64,6 +64,7 @@ function MongoManager(){
         // console.log(result);
         if(result!==null){
           reject("User already exists");
+          return;
         }
   
         collection.insertOne({
