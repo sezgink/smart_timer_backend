@@ -2,8 +2,9 @@ const http = require('node:http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoManager = require('./mongodb.js');
-
 const dbManager = MongoManager();
+
+const LoginManager = require('./login')();
 
 const router = express.Router();
 const app = express();
@@ -45,8 +46,14 @@ app.listen(port, () => {
 // setTimeout(()=>dbManager.CreateInterval({interval:10,mission:"Timer Backend"}),3000);
 // setTimeout(()=>dbManager.GetIntervals(100),3000);
 setTimeout(()=>{
-  dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
-  dbManager.GetIntervals(3000);
+  // dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
+  // dbManager.GetIntervals(3000);
+
+  // dbManager.AddUser({username:"Hello",hashedPassword:"bro"});
+  // dbManager.CheckUser({username:"Mellon",hashedPassword:"bro"});
+
+  LoginManager.login({username:"Jelly",password:"bro"},dbManager);
+  LoginManager.signUp({username:"Potato",password:"drone"},dbManager);
 
 },3000);
 // dbManager.GetIntervals(100);

@@ -1,5 +1,7 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const {GetDbCredidentals} = require('./dbConfigReader.js');
+const bcrypt = require ('bcrypt');
+
 
 function MongoManager(){
 
@@ -46,6 +48,63 @@ function MongoManager(){
       console.log(result);
       
 
+    }).catch((err)=>{
+      console.log(err);
+      
+    });
+
+  }
+
+  this.AddUser=function(newUser){
+
+    const collection =  this.db.collection("users");
+
+    
+    collection.findOne({username:newUser.username}).then((result)=>{
+      console.log(result);
+      if(result!==null){
+        console.log("User already exists");
+        return false;
+      }
+
+      collection.insertOne({
+        username:newUser.username,
+        hashedPassword: newUser.hashedPassword
+      }).then(()=>{
+        console.log("Successfuly inserted");
+        
+  
+      }).catch(err=>{
+        console.log(err);
+        
+      });
+
+    }).catch((err)=>{
+      console.log(err);
+      
+    });
+
+  }
+
+  this.CheckUser=function(user2check){
+
+    const collection =  this.db.collection("users");
+
+    
+    collection.findOne({username:user2check.username}).then((result)=>{
+      console.log(result);
+      if(result==null){
+        console.log("User not exists");
+        return false;
+      }
+
+      bcrypt.compare(user2check.password,result.hashedPassword).then((passwordsMatched)=>{
+        return passwordsMatched;
+
+      }).catch((err)=>{
+        console.log(err);
+        return false;
+      });
     }).catch((err)=>{
       console.log(err);
       
