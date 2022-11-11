@@ -18,14 +18,18 @@ const LoginManager=()=>{
         userdata = {};
         userdata.username = newUser.username;
 
-        bcrypt.hash(newUser.password,saltRaunds).then((hashedPassword)=>{
-            userdata.hashedPassword = hashedPassword;
-            mongoManager.AddUser(userdata);
+        return new Promise((resolve,reject)=>{
+            bcrypt.hash(newUser.password,saltRaunds).then((hashedPassword)=>{
+                userdata.hashedPassword = hashedPassword;
+                mongoManager.AddUser(userdata);
+    
+            }).catch((err)=>{
+                reject(err);
+            });
 
-        }).catch((err)=>{
-            console.log(err);
-            return false;
-        });
+        })
+
+        
     }
 
     return this;

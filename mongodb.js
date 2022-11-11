@@ -59,31 +59,30 @@ function MongoManager(){
 
     const collection =  this.db.collection("users");
 
-    
-    collection.findOne({username:newUser.username}).then((result)=>{
-      console.log(result);
-      if(result!==null){
-        console.log("User already exists");
-        return false;
-      }
-
-      collection.insertOne({
-        username:newUser.username,
-        hashedPassword: newUser.hashedPassword
-      }).then(()=>{
-        console.log("Successfuly inserted");
-        
+    return new Promise((resolve,reject)=>{
+      collection.findOne({username:newUser.username}).then((result)=>{
+        // console.log(result);
+        if(result!==null){
+          reject("User already exists");
+        }
   
-      }).catch(err=>{
-        console.log(err);
+        collection.insertOne({
+          username:newUser.username,
+          hashedPassword: newUser.hashedPassword
+        }).then(()=>{
+          console.log("Successfuly inserted");
+          resolve(true);
+    
+        }).catch(err=>{
+          reject(err);
+          
+        });
+  
+      }).catch((err)=>{
+        reject(err);
         
       });
-
-    }).catch((err)=>{
-      console.log(err);
-      
-    });
-
+    })
   }
 
   this.CheckUser=function(user2check){

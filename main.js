@@ -32,8 +32,14 @@ router.get('/', (req, res) => {
 router.post('/login',(req, res) => {
   var user_name = req.body.user;
   var password = req.body.password;
-  console.log("User name = "+user_name+", password is "+password);
-  res.end("Yes");
+  // console.log("User name = "+user_name+", password is "+password);
+  LoginManager.signUp({username:"Potatos",password:"drone"},dbManager).then((loginResult)=>{
+    console.log("Login Result");
+    res.end("Yes");
+  });
+  
+
+  
   });
 
 
@@ -53,8 +59,8 @@ setTimeout(()=>{
   // dbManager.CheckUser({username:"Mellon",hashedPassword:"bro"});
 
   // LoginManager.login({username:"Jelly",password:"bro"},dbManager);
-  LoginManager.login({username:"Potatos",password:"drone"},dbManager);
-  LoginManager.signUp({username:"Potatos",password:"drone"},dbManager);
+  // LoginManager.login({username:"Potatos",password:"drone"},dbManager);
+  // LoginManager.signUp({username:"Potatos",password:"drone"},dbManager);
 
 },3000);
 // dbManager.GetIntervals(100);
