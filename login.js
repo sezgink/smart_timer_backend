@@ -21,7 +21,11 @@ const LoginManager=()=>{
         return new Promise((resolve,reject)=>{
             bcrypt.hash(newUser.password,saltRaunds).then((hashedPassword)=>{
                 userdata.hashedPassword = hashedPassword;
-                mongoManager.AddUser(userdata);
+                mongoManager.AddUser(userdata).then((result)=>{
+                    resolve(result);
+                }).catch((err)=>{
+                    reject(err);
+                });
     
             }).catch((err)=>{
                 reject(err);

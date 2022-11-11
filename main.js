@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const MongoManager = require('./mongodb.js');
 const dbManager = MongoManager();
 
+const cors = require('cors');
+
 const LoginManager = require('./login')();
 
 const router = express.Router();
@@ -19,23 +21,26 @@ const port = 9443;
 // });
 
 
+app.use(cors({origin:true}));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use("/",router);
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 router.get('/', (req, res) => {
   res.send('Smart Timer API')
 });
 
 router.post('/login',(req, res) => {
-  var user_name = req.body.user;
+  var username = req.body.email;
   var password = req.body.password;
-  // console.log("User name = "+user_name+", password is "+password);
-  LoginManager.signUp({username:"Potatos",password:"drone"},dbManager).then((loginResult)=>{
+  console.log("User name = "+username+", password is "+password);
+  LoginManager.signUp({"username":username,"password":password},dbManager).then((loginResult)=>{
     console.log("Login Result");
     res.end("Yes");
+  }).catch((err)=>{
+    console.log(err);
   });
   
 
