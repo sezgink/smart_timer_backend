@@ -37,10 +37,17 @@ router.post('/login',(req, res) => {
   var password = req.body.password;
   console.log("User name = "+username+", password is "+password);
   LoginManager.signUp({"username":username,"password":password},dbManager).then((loginResult)=>{
-    console.log("Login Result");
-    res.end("Yes");
+    console.log("Signup Result");
+    res.status(200);
+    res.end(JSON.stringify({message:"Nice"}));
+
+    
   }).catch((err)=>{
     console.log(err);
+    res.status(502);
+    res.end(JSON.stringify({message:"Error"}));
+
+    
   });
   
 
