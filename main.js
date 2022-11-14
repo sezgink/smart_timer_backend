@@ -20,7 +20,6 @@ const port = 9443;
 //   res.end('Hello, World!\n');
 // });
 
-
 app.use(cors({origin:true}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,20 +39,12 @@ router.post('/login',(req, res) => {
     console.log("Signup Result");
     res.status(200);
     res.end(JSON.stringify({message:"Nice"}));
-
-    
   }).catch((err)=>{
     console.log(err);
     res.status(502);
     res.end(JSON.stringify({message:"Error"}));
-
-    
   });
-  
-
-  
-  });
-
+});
 
 
 app.listen(port, () => {
