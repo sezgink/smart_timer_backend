@@ -6,12 +6,15 @@ const LoginManager=()=>{
 
     this.login = (user2check,mongoManager)=>{
         user2check.saltRaunds= saltRaunds;
-        
-        mongoManager.CheckUser(user2check).then((checkResult)=>{
-            console.log(checkResult);
+
+        return new Promise((resolve,reject)=>{
+            mongoManager.CheckUser(user2check).then((checkResult)=>{
+                console.log(checkResult);
+                resolve(true);
+            }).catch((err)=>{
+                reject(err);
+            });
         });
-
-
     }
 
     this.signUp = (newUser,mongoManager)=>{

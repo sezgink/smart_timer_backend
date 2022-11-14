@@ -35,7 +35,22 @@ router.post('/login',(req, res) => {
   var username = req.body.email;
   var password = req.body.password;
   console.log("User name = "+username+", password is "+password);
-  LoginManager.signUp({"username":username,"password":password},dbManager).then((loginResult)=>{
+  LoginManager.login({"username":username,"password":password},dbManager).then((loginResult)=>{
+    console.log("Login Result");
+    res.status(200);
+    res.end(JSON.stringify({message:"Nice"}));
+  }).catch((err)=>{
+    console.log(err);
+    res.status(502);
+    res.end(JSON.stringify({message:"Error"}));
+  });
+});
+
+router.post('/signup',(req, res) => {
+  var username = req.body.email;
+  var password = req.body.password;
+  console.log("User name = "+username+", password is "+password);
+  LoginManager.signUp({"username":username,"password":password},dbManager).then((signupResult)=>{
     console.log("Signup Result");
     res.status(200);
     res.end(JSON.stringify({message:"Nice"}));
