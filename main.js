@@ -38,7 +38,12 @@ router.post('/login',(req, res) => {
   LoginManager.login({"username":username,"password":password},dbManager).then((loginResult)=>{
     console.log("Login Result");
     res.status(200);
-    res.end(JSON.stringify({message:"Nice"}));
+    if(loginResult==true){
+      res.end(JSON.stringify({message:"Nice"}));
+    }else{
+      res.end(JSON.stringify({message:"Bad"}));
+    }
+    
   }).catch((err)=>{
     console.log(err);
     res.status(502);

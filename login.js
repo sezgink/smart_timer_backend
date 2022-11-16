@@ -10,7 +10,7 @@ const LoginManager=()=>{
         return new Promise((resolve,reject)=>{
             mongoManager.CheckUser(user2check).then((checkResult)=>{
                 console.log(checkResult);
-                resolve(true);
+                resolve(checkResult);
             }).catch((err)=>{
                 reject(err);
             });
@@ -35,8 +35,6 @@ const LoginManager=()=>{
             });
 
         })
-
-        
     }
 
     return this;
