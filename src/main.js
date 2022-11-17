@@ -1,8 +1,7 @@
-const http = require('node:http');
 const express = require('express');
 const bodyParser = require('body-parser');
-const MongoManager = require('./mongodb.js');
-const dbManager = MongoManager();
+require('../src/mongoose');
+const User = require('./models/user');
 
 const cors = require('cors');
 
@@ -27,25 +26,23 @@ router.get('/', (req, res) => {
   res.send('Smart Timer API')
 });
 
-router.post('/login',(req, res) => {
+router.post('/login',async (req, res) => {
   var username = req.body.email;
   var password = req.body.password;
-  LoginManager.login({"username":username,"password":password},dbManager).then((loginResult)=>{
-    console.log("Login Result");
-    res.status(200);
+  try{
+    let loginResult = await LoginManager.login({"username":username,"password":password},dbManager);
     if(loginResult.success==true){
       const _token = jwt.sign({id:loginResult.id},"untillovemesometimewreckdsa");
-      res.end(JSON.stringify({success:true,token:_token}));
+      res.status(200).end(JSON.stringify({success:true,token:_token}));
       // res.end(JSON.stringify({message:"Nice"}));
     }else{
-      res.end(JSON.stringify({success:false}));
+      res.status(400).end(JSON.stringify({success:false}));
     }
-    
-  }).catch((err)=>{
+  } catch(err){
     console.log(err);
-    res.status(502);
+    res.status(400);
     res.end(JSON.stringify({success:false}));
-  });
+  }
 });
 
 router.post('/signup',(req, res) => {

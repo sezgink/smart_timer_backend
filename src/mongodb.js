@@ -1,5 +1,5 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const {GetDbCredidentals} = require('./dbConfigReader.js');
+const {GetDbCredidentals} = require('./dbConfig/dbConfigReader');
 const bcrypt = require ('bcrypt');
 
 

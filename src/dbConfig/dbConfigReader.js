@@ -3,7 +3,7 @@ const fs = require('fs');
 function GetDbCredidentals(){
     // Calling the readFileSync() method
     // to read 'input.txt' file
-    const dbData = fs.readFileSync('./dbConfig.txt',
+    const dbData = fs.readFileSync('./src/dbConfig/dbConfig.txt',
     {encoding:'utf8', flag:'r'});
 
     
