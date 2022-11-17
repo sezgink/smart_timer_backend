@@ -11,14 +11,10 @@ const LoginManager = require('./login')();
 const router = express.Router();
 const app = express();
 
+const jwt = require('jsonwebtoken');
+
 const hostname = '127.0.0.1';
 const port = 9443;
-
-// const server = http.createServer((req, res) => {
-//   res.statusCode = 200;
-//   res.setHeader('Content-Type', 'text/plain');
-//   res.end('Hello, World!\n');
-// });
 
 app.use(cors({origin:true}));
 
@@ -34,27 +30,27 @@ router.get('/', (req, res) => {
 router.post('/login',(req, res) => {
   var username = req.body.email;
   var password = req.body.password;
-  console.log("User name = "+username+", password is "+password);
   LoginManager.login({"username":username,"password":password},dbManager).then((loginResult)=>{
     console.log("Login Result");
     res.status(200);
-    if(loginResult==true){
-      res.end(JSON.stringify({message:"Nice"}));
+    if(loginResult.success==true){
+      const _token = jwt.sign({id:loginResult.id},"untillovemesometimewreckdsa");
+      res.end(JSON.stringify({success:true,token:_token}));
+      // res.end(JSON.stringify({message:"Nice"}));
     }else{
-      res.end(JSON.stringify({message:"Bad"}));
+      res.end(JSON.stringify({success:false}));
     }
     
   }).catch((err)=>{
     console.log(err);
     res.status(502);
-    res.end(JSON.stringify({message:"Error"}));
+    res.end(JSON.stringify({success:false}));
   });
 });
 
 router.post('/signup',(req, res) => {
   var username = req.body.email;
   var password = req.body.password;
-  console.log("User name = "+username+", password is "+password);
   LoginManager.signUp({"username":username,"password":password},dbManager).then((signupResult)=>{
     console.log("Signup Result");
     res.status(200);
@@ -70,21 +66,4 @@ router.post('/signup',(req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
-// dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
-// setTimeout(()=>dbManager.CreateInterval({interval:10,mission:"Timer Backend"}),3000);
-// setTimeout(()=>dbManager.GetIntervals(100),3000);
-setTimeout(()=>{
-  // dbManager.CreateInterval({interval:10,mission:"Timer Backend"});
-  // dbManager.GetIntervals(3000);
-
-  // dbManager.AddUser({username:"Hello",hashedPassword:"bro"});
-  // dbManager.CheckUser({username:"Mellon",hashedPassword:"bro"});
-
-  // LoginManager.login({username:"Jelly",password:"bro"},dbManager);
-  // LoginManager.login({username:"Potatos",password:"drone"},dbManager);
-  // LoginManager.signUp({username:"Potatos",password:"drone"},dbManager);
-
-},3000);
-// dbManager.GetIntervals(100);
 

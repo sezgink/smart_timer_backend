@@ -103,7 +103,12 @@ function MongoManager(){
       console.log(result);
 
       bcrypt.compare(user2check.password,result.hashedPassword).then((passwordsMatched)=>{
-        resolve(passwordsMatched);
+        if(passwordsMatched==true){
+          resolve({success:true,id:result._id.toString()});
+        } else{
+          resolve({success:false});
+        }
+        
       }).catch((err)=>{
         console.log(err);
         reject(err);
@@ -126,34 +131,3 @@ function MongoManager(){
 // CreateInterval({interval:200,mission:"Fun"});
 
 module.exports = MongoManager;
-
-/*
-client.connect(err => {
-    if(err){
-        return console.log("Cant connect to db"+err.cause);
-    }
-  const db = client.db("timer");
-  const collection = db.collection("intervals");
-
-  // collection.insertOne({
-  //   interval:100,
-  //   mission: "TimerBackend"
-  // });
-  // perform actions on the collection object
-  client.close();
-});
-
-const ConnectAndUse = (onConnect)=>{
-  client.connect(err => {
-    if(err){
-        return console.log("Cant connect to db"+err.cause);
-    }
-  const db = client.db("timer");
-  const collection = db.collection("intervals");
-
-  onConnect(collection);
-
-  // client.close();
-});
-}
-*/
