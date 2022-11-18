@@ -10,7 +10,7 @@ const userSchema = new Schema({
         lowercase: true,
         trim : true,
         maxlength: 255,
-        // unique: true,
+        unique: true,
         validate(value){
             if(!validator.isEmail(value)){
                 throw new Error("Mail not valid");
@@ -32,7 +32,7 @@ userSchema.statics.findCheck = async (email,password)=>{
     if(!user){
         throw new Error("Unable to login");
     }
-    
+
     const passMatch = await bcrypt.compare(password,user.password);
 
     if(!passMatch){

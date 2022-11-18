@@ -9,5 +9,8 @@ const databaseName = "timer";
 const uri = "mongodb+srv://"+databaseUser+":"+databasePassword+"@"+databaseCluster+"/"+databaseName+"?retryWrites=true&w=majority";
 
 console.log(uri)
-mongoose.connect(uri,{useNewUrlParser:true});
+mongoose.connect(uri,{
+    useNewUrlParser:true,
+    autoIndex:true
+});
 
