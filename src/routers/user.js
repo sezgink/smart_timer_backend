@@ -10,7 +10,7 @@ router.post('/login',async (req, res) => {
       const username = req.body.email;
       const password = req.body.password;
 
-      const loginResult = await User.findByCredidentials(username,password);
+      const loginResult = await User.findByCredidentals(username,password);
       const token = await loginResult.CreateAuthToken();
       res.status(200).end(JSON.stringify({user:loginResult,token}));
   
