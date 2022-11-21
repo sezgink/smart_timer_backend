@@ -4,7 +4,9 @@ const {default :validator} = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const jwtData = require('../jwtConfig/jwtConfigReader')();
+// const {jwtConfigReader} = require('../jwtConfig/jwtConfigReader');
+const {GetJWTData} = require('../jwtConfig/jwtConfigReader');
+const jwtData = GetJWTData(); //Get JWT key
 
 const userSchema = new Schema({
     email : {
@@ -55,7 +57,7 @@ userSchema.methods.CreateAuthToken = async function(){
 }
 
 //Find email and check matching password with hash for login
-userSchema.statics.findCheck = async (email,password)=>{
+userSchema.statics.findByCredidentals = async (email,password)=>{
     const user = await User.findOne({email});
 
     if(!user){

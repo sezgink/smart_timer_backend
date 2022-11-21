@@ -6,13 +6,13 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/login',async (req, res) => {
-    var username = req.body.email;
-    var password = req.body.password;
     try{
-      let loginResult = await User.findCheck(username,password);
-  
-      const _token = jwt.sign({id:loginResult.id},"untillovemesometimewreckdsa");
-      res.status(200).end(JSON.stringify({user:loginResult,token:_token}));
+      const username = req.body.email;
+      const password = req.body.password;
+
+      const loginResult = await User.findByCredidentials(username,password);
+      const token = await loginResult.CreateAuthToken();
+      res.status(200).end(JSON.stringify({user:loginResult,token}));
   
     } catch(err){
       console.log(err);
