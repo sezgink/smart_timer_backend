@@ -104,3 +104,4 @@ dist
 .tern-port
 
 dbConfig.txt
+jwtConfig.txt

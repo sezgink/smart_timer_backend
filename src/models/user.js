@@ -4,6 +4,8 @@ const {default :validator} = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const jwtData = require('../jwtConfig/jwtConfigReader')();
+
 const userSchema = new Schema({
     email : {
         type: String,
@@ -43,9 +45,13 @@ userSchema.virtual('intervals', {
 userSchema.methods.CreateAuthToken = async function(){
     const user=this;
 
-    const token = jwt.sign({id:user._id.toString()},'temporaryKey');
+    const token = jwt.sign({id:user._id.toString()},jwtData.jwtKey);
 
     user.tokens.concat({token});
+
+    await user.save();
+
+    return token;
 }
 
 //Find email and check matching password with hash for login
