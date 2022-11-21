@@ -12,12 +12,12 @@ router.post('/user/login',async (req, res) => {
 
       const loginResult = await User.findByCredidentals(username,password);
       const token = await loginResult.CreateAuthToken();
-      res.status(200).end(JSON.stringify({user:loginResult,token}));
+      res.status(200).send(JSON.stringify({user:loginResult,token}));
   
     } catch(err){
       console.log(err);
       res.status(400);
-      res.end(JSON.stringify({error:err}));
+      res.send(JSON.stringify({error:err}));
     }
   });
   
@@ -31,10 +31,10 @@ router.post('/user/login',async (req, res) => {
         password
       });
       await newUser.save();
-      res.status(200).end(JSON.stringify(newUser));
+      res.status(200).send(JSON.stringify(newUser));
   
     } catch(err){
-      res.status(400).end(JSON.stringify({Error:err}));
+      res.status(400).send(JSON.stringify({Error:err}));
       console.log(err);
     }
   });
