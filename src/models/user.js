@@ -56,6 +56,16 @@ userSchema.methods.CreateAuthToken = async function(){
     return token;
 }
 
+userSchema.methods.toJSON = function(){
+    const user = this;
+    const userObject = user.toObject();
+    
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+}
+
 //Find email and check matching password with hash for login
 userSchema.statics.findByCredidentals = async (email,password)=>{
     const user = await User.findOne({email});
@@ -84,6 +94,8 @@ userSchema.pre("save",async function (next){
     next();
 
 });
+
+
 
 const User = mongoose.model('User',userSchema);
 
