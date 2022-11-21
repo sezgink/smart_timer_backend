@@ -33,6 +33,12 @@ const userSchema = new Schema({
     }]
 });
 
+userSchema.virtual('intervals', {
+    ref: 'Interval',
+    localField: '_id',
+    foreignField: 'owner'
+});
+
 //Create JSON Web Token for autharize users
 userSchema.methods.CreateAuthToken = async function(){
     const user=this;
