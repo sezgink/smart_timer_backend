@@ -33,16 +33,12 @@ router.post('/intervals/add', auth, async (req,res)=>{
 
 router.post('/intervals/addMultiple', auth, async (req,res)=>{
     try{
-    const interval = await Interval.findOne({_id:req.params.id, owner : req.user});
-
-    if (!interval) {
-        return res.status(404).send();
-    }
-
-    response.send(interval);
-    } catch(e){
-        res.status(500).send();
-    }
+        const result = await Interval.insertMany(req.vody.intervals);
+    
+        response.send({result});
+        } catch(e){
+            res.status(500).send();
+        }
 });
 
 module.exports = router;
