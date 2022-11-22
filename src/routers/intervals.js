@@ -21,11 +21,10 @@ router.get('/intervals/:id', auth, async (req,res)=>{
 
 router.post('/intervals/add', auth, async (req,res)=>{
     try{
-    const interval = new Interval({intervalLength:req.body.intervalLength, task:req.body.task,owner:req.user._id});
+        const interval = new Interval({intervalLength:req.body.intervalLength, task:req.body.task,owner:req.user._id});
+        await interval.save();
 
-    await interval.save();
-
-    response.send(interval);
+        res.status(201).send(interval);
     } catch(e){
         res.status(500).send();
     }
@@ -33,9 +32,9 @@ router.post('/intervals/add', auth, async (req,res)=>{
 
 router.post('/intervals/addMultiple', auth, async (req,res)=>{
     try{
-        const result = await Interval.insertMany(req.vody.intervals);
+        const result = await Interval.insertMany(req.body.intervals);
     
-        response.send({result});
+        res.status(201).send({result});
         } catch(e){
             res.status(500).send();
         }
