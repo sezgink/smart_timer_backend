@@ -47,9 +47,9 @@ userSchema.virtual('intervals', {
 userSchema.methods.CreateAuthToken = async function(){
     const user=this;
 
-    const token = jwt.sign({id:user._id.toString()},jwtData.jwtKey);
+    const token = jwt.sign({_id:user._id.toString()},jwtData.jwtKey);
 
-    user.tokens.concat({token});
+    user.tokens = user.tokens.concat({token});
 
     await user.save();
 
