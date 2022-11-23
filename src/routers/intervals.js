@@ -5,17 +5,41 @@ const Interval = require('../models/intervals');
 
 const router = express.Router();
 
-router.get('/intervals/:id', auth, async (req,res)=>{
+router.get('/intervals/findById:id', auth, async (req,res)=>{
+    console.log("Lets go");
     try{
-    const interval = await Interval.findOne({_id:req.params.id, owner : req.user});
-
+    const interval = await Interval.findOne({_id:req.params.id, owner : req.user._id});
+    console.log("Lets go2");
     if (!interval) {
         return res.status(404).send();
     }
 
-    response.send(interval);
+    res.send(interval);
     } catch(e){
         res.status(500).send();
+    }
+});
+
+// router.get('/intervals/getBetween/:beginDate/:endDate', auth, async (req,res)=>{
+router.get('/intervals/getBetween/', auth, async (req,res)=>{
+    console.log("Lets go Interval1");
+    try{
+        const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date("2022-11-23T21:50:40.294Z"), $lte : new Date("2022-11-23T21:53:40.294Z") }});
+        // const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date(2014, 4, 24)}});
+        
+        // const intervalsBetween = await Interval.find({owner : req.user._id});
+        console.log(intervalsBetween);
+
+        if (!intervalsBetween) {
+            return res.status(404).send();
+        }
+
+        console.log("Lets go Interval3");
+
+        res.send({intervalsBetween});
+    } catch(e){
+        console.log("err");
+        res.status(500).send(e);
     }
 });
 

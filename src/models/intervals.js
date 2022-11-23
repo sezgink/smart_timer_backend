@@ -15,8 +15,15 @@ const intervalSchema = new Schema({
         required: true,
         ref: 'User'
     }
-});
+}, 
+{ //Settings
+    timestamps : {
+        createdAt : true,
+        updatedAt : false
+    }
+}
+);
 
-const Interval = new mongoose.model('Interval',intervalSchema);
+const Interval = mongoose.model('Interval',intervalSchema);
 
 module.exports = Interval;
