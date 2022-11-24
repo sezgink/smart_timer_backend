@@ -21,11 +21,9 @@ router.get('/intervals/findById:id', auth, async (req,res)=>{
 
 router.get('/intervals/getBetween', auth, async (req,res)=>{
 // router.get('/intervals/getBetween/', auth, async (req,res)=>{
-    console.log("LetsGo");
     try{
         
         var daysBetween = (new Date(req.query.endDate).getTime() - new Date(req.query.beginDate).getTime())/86400000;
-        console.log(daysBetween);
         if(daysBetween>7){
             return res.status(404).send({"error":"Max day range is 7 days"});
         }
