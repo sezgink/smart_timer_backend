@@ -6,7 +6,6 @@ const Interval = require('../models/intervals');
 const router = express.Router();
 
 router.get('/intervals/findById:id', auth, async (req,res)=>{
-    console.log("Lets go");
     try{
     const interval = await Interval.findOne({_id:req.params.id, owner : req.user._id});
     console.log("Lets go2");
@@ -20,25 +19,28 @@ router.get('/intervals/findById:id', auth, async (req,res)=>{
     }
 });
 
-// router.get('/intervals/getBetween/:beginDate/:endDate', auth, async (req,res)=>{
-router.get('/intervals/getBetween/', auth, async (req,res)=>{
-    console.log("Lets go Interval1");
+router.get('/intervals/getBetween', auth, async (req,res)=>{
+// router.get('/intervals/getBetween/', auth, async (req,res)=>{
+    console.log("LetsGo");
     try{
-        const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date("2022-11-23T21:50:40.294Z"), $lte : new Date("2022-11-23T21:53:40.294Z") }});
-        // const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date(2014, 4, 24)}});
         
-        // const intervalsBetween = await Interval.find({owner : req.user._id});
-        console.log(intervalsBetween);
-
-        if (!intervalsBetween) {
-            return res.status(404).send();
+        var daysBetween = (new Date(req.query.endDate).getTime() - new Date(req.query.beginDate).getTime())/86400000;
+        console.log(daysBetween);
+        if(daysBetween>7){
+            return res.status(404).send({"error":"Max day range is 7 days"});
         }
 
-        console.log("Lets go Interval3");
+        // const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date("2022-11-23T21:50:40.294Z"), $lte : new Date("2022-11-23T21:53:40.294Z") }});
+        const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date(req.query.beginDate), $lte : new Date(req.query.endDate)}});
+        // console.log(intervalsBetween);
+
+        if (!intervalsBetween) {
+            return res.status(404).send({"error":"No inervals"});
+        }
 
         res.send({intervalsBetween});
     } catch(e){
-        console.log("err");
+        console.log("err"+e);
         res.status(500).send(e);
     }
 });
