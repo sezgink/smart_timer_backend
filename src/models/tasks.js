@@ -13,6 +13,11 @@ const taskSchema = new Schema({
     }
 });
 
-const Task = new mongoose.model('Task',intervalSchema);
+taskSchema.statics.findTasksByUser = async (userId)=>{
+    const tasksOfUser = await Task.find({owner:userId});
+    return tasksOfUser;
+}
+
+const Task = new mongoose.model('Task',taskSchema);
 
 module.exports = Task;

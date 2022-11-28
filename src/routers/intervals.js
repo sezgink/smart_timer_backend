@@ -47,7 +47,7 @@ router.get('/intervals/getDailyWorkBetween', auth, async (req,res)=>{
     // router.get('/intervals/getBetween/', auth, async (req,res)=>{
         try{
             const beginDate = new Date(req.query.beginDate);
-            const endDate = new Date(req.query.endDate);
+            let endDate = new Date(req.query.endDate);
             var daysBetween = (endDate.getTime() - beginDate.getTime())/86400000;
             // console.log(daysBetween);
             if(daysBetween>7){
@@ -57,13 +57,18 @@ router.get('/intervals/getDailyWorkBetween', auth, async (req,res)=>{
             // const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: beginDate, $lte : endDate}});
             
             // const intervalsBetween = await Interval.GetDailyWorks(beginDate,endDate,req.user);
+
+            console.log(beginDate);
+            // endDate.setHours(23,0,0);
+            endDate.setUTCHours(23,0,0);
+            console.log(endDate);
+            
+
             const intervalsBetween = await Interval.GetDailyWorksWithTasks(beginDate,endDate,req.user);
     
             if (!intervalsBetween) {
                 return res.status(404).send({"error":"No inervals"});
             }
-
-
     
             res.send({intervalsBetween});
         } catch(e){

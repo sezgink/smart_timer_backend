@@ -3,6 +3,7 @@ require('../src/mongoose');
 
 const userRouter = require('./routers/user');
 const intervalsRouter = require('./routers/intervals');
+const tasksRouter = require('./routers/tasks')
 
 const cors = require('cors');
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended:true}));
 
 app.use("/",userRouter);
 app.use("/",intervalsRouter);
+app.use("/",tasksRouter);
 
 app.get('/', (req, res) => {
   res.send('Smart Timer API')
