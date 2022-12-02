@@ -43,11 +43,15 @@ var groupByInGroups = async function(xs, key) {
 var groupByDays = async function(xs, key) {
     return await xs.reduce(function(rv, x) {
       (rv[x[key].getUTCDate()] = rv[x[key].getUTCDate()] || []).push(x);
+      // (rv[x[key].getDate()] = rv[x[key].getDate()] || []).push(x);
     //   (rv[x[key].getDay()] = rv[x[key].getDay()] || []).push(x);
       return rv;
     }, {});
   };
 
+function getDaysInMonth(year, month) {
+  return new Date(year, month+1, 0).getDate();
+}
   
 
 intervalSchema.statics.GetDailyWorks = async (beginDate, endDate,owner)=>{
@@ -78,18 +82,41 @@ intervalSchema.statics.GetDailyWorksWithTasks = async (beginDate, endDate,owner)
     try {
     const intervalsBetween = await Interval.find({owner, createdAt: { $gte: beginDate, $lte : endDate}});
     // const groupedByDay = groupBy(intervalsBetween,created);
-    const groupedByDays = await groupByDays(intervalsBetween,"createdAt");
-    const groupedByTask = await Object.values(groupedByDays).map((dailyValues)=>{
+    const groupedByDays = await groupByDays(intervalsBetween,"createdAt")
+
+    // console.log(groupedByDays);
+
+    // const beginDay = beginDate.getUTCDate();
+    const beginDay = beginDate.getDate();
+    
+    const endDay = endDate.getDate();
+    const daysInMonth = getDaysInMonth(beginDate.getFullYear(),beginDate.getMonth());
+
+    const daysBetween = (endDay-beginDay);
+    // console.log(daysBetween);
+    
+
+    let daysWithEmpties = groupedByDays;
+    for (let index = 0; index <= daysBetween; index++) {
+      const currentDay = (beginDay+index)%(daysInMonth+1);
+      daysWithEmpties[currentDay] = daysWithEmpties[currentDay] ||[];
+    }
+
+    // const groupedByTask = await Object.values(groupedByDays).map((dailyValues)=>{
+    const groupedByTask = await Object.values(daysWithEmpties).map((dailyValues)=>{
         return groupBy(dailyValues,"task");
     });
+
+
+
+    // console.log(daysWithEmpties);
 
     const dailySeconds =  groupedByTask.map((dailyObject)=>{
         const keysArray = Object.keys(dailyObject);
         keysArray.forEach(keyTask => {
             dailyObject[keyTask] = dailyObject[keyTask].reduce((rv,x)=>{
               return rv + x.intervalLength;
-            },0);
-          
+            },0);          
         });
         
         return dailyObject; 

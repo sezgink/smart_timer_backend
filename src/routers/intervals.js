@@ -36,7 +36,7 @@ router.get('/intervals/getBetween', auth, async (req,res)=>{
             return res.status(404).send({"error":"No inervals"});
         }
 
-        res.send({intervalsBetween});
+        res.status(200).send({intervalsBetween});
     } catch(e){
         console.log("err"+e);
         res.status(500).send(e);
@@ -58,11 +58,9 @@ router.get('/intervals/getDailyWorkBetween', auth, async (req,res)=>{
             
             // const intervalsBetween = await Interval.GetDailyWorks(beginDate,endDate,req.user);
 
-            console.log(beginDate);
-            // endDate.setHours(23,0,0);
-            endDate.setUTCHours(23,0,0);
-            console.log(endDate);
-            
+            // console.log(beginDate);           
+            // console.log(endDate);
+            // console.log("-");
 
             const intervalsBetween = await Interval.GetDailyWorksWithTasks(beginDate,endDate,req.user);
     

@@ -18,7 +18,6 @@ router.post('/tasks/', auth, async (req,res)=>{
 router.get('/tasks/',auth, async (req,res)=>{
     try{
         const tasks = await Task.findTasksByUser(req.user._id);
-
         if (!tasks) {
             res.status(404).send()
         }
@@ -52,7 +51,7 @@ router.delete('/tasks/:id', auth, async (req, res) => {
             res.status(404).send()
         }
 
-        res.send(task)
+        res.status(200).send(task)
     } catch (e) {
         res.status(500).send()
     }
