@@ -28,7 +28,6 @@ router.get('/intervals/getBetween', auth, async (req,res)=>{
             return res.status(404).send({"error":"Max day range is 7 days"});
         }
 
-        // const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date("2022-11-23T21:50:40.294Z"), $lte : new Date("2022-11-23T21:53:40.294Z") }});
         const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: new Date(req.query.beginDate), $lte : new Date(req.query.endDate)}});
         // console.log(intervalsBetween);
 
@@ -44,7 +43,6 @@ router.get('/intervals/getBetween', auth, async (req,res)=>{
 });
 
 router.get('/intervals/getDailyWorkBetween', auth, async (req,res)=>{
-    // router.get('/intervals/getBetween/', auth, async (req,res)=>{
         try{
             const beginDate = new Date(req.query.beginDate);
             let endDate = new Date(req.query.endDate);
@@ -55,12 +53,7 @@ router.get('/intervals/getDailyWorkBetween', auth, async (req,res)=>{
             }
     
             // const intervalsBetween = await Interval.find({owner : req.user, createdAt: { $gte: beginDate, $lte : endDate}});
-            
             // const intervalsBetween = await Interval.GetDailyWorks(beginDate,endDate,req.user);
-
-            // console.log(beginDate);           
-            // console.log(endDate);
-            // console.log("-");
 
             const intervalsBetween = await Interval.GetDailyWorksWithTasks(beginDate,endDate,req.user);
     

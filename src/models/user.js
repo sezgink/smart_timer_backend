@@ -37,6 +37,7 @@ const userSchema = new Schema({
     }]
 });
 
+//Add virtual field for populating
 userSchema.virtual('intervals', {
     ref: 'Interval',
     localField: '_id',
@@ -56,6 +57,7 @@ userSchema.methods.CreateAuthToken = async function(){
     return token;
 }
 
+//Remove password and tokens while converting to JSON
 userSchema.methods.toJSON = function(){
     const user = this;
     const userObject = user.toObject();
