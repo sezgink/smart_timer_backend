@@ -31,7 +31,8 @@ router.post('/user/login',async (req, res) => {
         password
       });
       await newUser.save();
-      res.status(200).send(JSON.stringify(newUser));
+      const token = await newUser.CreateAuthToken();
+      res.status(201).send(JSON.stringify({user:newUser,token}));
   
     } catch(err){
       res.status(400).send(JSON.stringify({Error:err}));
@@ -46,7 +47,7 @@ router.post('/user/login',async (req, res) => {
       })
       await req.user.save();
 
-      res.send();
+      res.status(200).send();
     } catch (e) {
         res.status(500).send();
     }
