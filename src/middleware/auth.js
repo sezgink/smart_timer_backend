@@ -1,13 +1,12 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const {GetJWTData} = require('../jwtConfig/jwtConfigReader');
-const jwtData = GetJWTData();
+const jwtKey = process.env.JWTKEY;
 
 const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, jwtData.jwtKey);
+        const decoded = jwt.verify(token, jwtKey);
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
 
         if (!user) {

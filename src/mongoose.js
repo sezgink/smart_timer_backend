@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
-const {GetDbCredidentals} = require('./dbConfig/dbConfigReader');
-
-const dbCredidentals = GetDbCredidentals();
-const databaseUser=dbCredidentals.dbUser;
-const databasePassword=dbCredidentals.dbPassword;
-const databaseCluster=dbCredidentals.dbCluster;
+const databaseUser=process.env.DBUSER;
+const databasePassword=process.env.DBPASSWORD;
+const databaseCluster=process.env.DBCLUSTER;
 const databaseName = "timer";
 const uri = "mongodb+srv://"+databaseUser+":"+databasePassword+"@"+databaseCluster+"/"+databaseName+"?retryWrites=true&w=majority";
 

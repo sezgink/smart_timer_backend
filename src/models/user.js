@@ -4,9 +4,7 @@ const {default :validator} = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// const {jwtConfigReader} = require('../jwtConfig/jwtConfigReader');
-const {GetJWTData} = require('../jwtConfig/jwtConfigReader');
-const jwtData = GetJWTData(); //Get JWT key
+const jwtKey = process.env.JWTKEY; //Get JWT key
 
 const userSchema = new Schema({
     email : {
@@ -48,7 +46,7 @@ userSchema.virtual('intervals', {
 userSchema.methods.CreateAuthToken = async function(){
     const user=this;
 
-    const token = jwt.sign({_id:user._id.toString()},jwtData.jwtKey);
+    const token = jwt.sign({_id:user._id.toString()},jwtKey);
 
     user.tokens = user.tokens.concat({token});
 
