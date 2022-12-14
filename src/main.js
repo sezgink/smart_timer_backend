@@ -11,7 +11,8 @@ const cors = require('cors');
 const app = express();
 
 const hostname = '127.0.0.1';
-const port = 9443;
+// const port = 9443;
+const port = process.env.PORT || 9443;
 
 app.use(cors({origin:true}));
 
