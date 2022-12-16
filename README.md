@@ -3,7 +3,7 @@
 Timer app for tracking work periods, with aim of observe most effective time cycles and protect mental wellbeing while working.
 
 For working example https://sezgink.github.io/smart_timer
-(need for connecting to backend)
+(needs login for backend operations)
 
 ## Backend Job
 
